@@ -3,10 +3,10 @@
 Each milestone = one PR, CI green (unit tests + debug APK), no secrets in code.
 
 ## M1: Connections (Tier 1)
-- [ ] `ConnectionProfile` model (name, host, port, db, user, sslmode, CA/client-cert refs).
-- [ ] Encrypted profile store (Keystore AES-GCM; biometric-gated key). Unit-test the serialization layer.
-- [ ] Server list screen + add/edit dialog (pgAdmin "Register Server" style).
-- [ ] `ConnectionManager`: open/close, TLS config (verify-full, custom CA), read-only default, connect timeout, error mapping.
+- [x] `ConnectionProfile` model (name, host, port, db, user, sslmode, CA/client-cert refs).
+- [x] Encrypted profile store (Keystore AES-GCM; biometric-gated key). Unit-test the serialization layer.
+- [x] Server list screen + add/edit dialog (pgAdmin "Register Server" style).
+- [x] `ConnectionManager`: open/close, TLS config (verify-full, custom CA), read-only default, connect timeout, error mapping.
 
 ## M2: Object browser
 - [ ] Catalog queries: databases, schemas, tables, views, matviews, sequences, functions, columns, indexes, constraints.
