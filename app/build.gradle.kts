@@ -51,6 +51,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
@@ -63,4 +64,6 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.4")
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.json:json:20240303") // android.jar org.json is stubbed in unit tests
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
 }
