@@ -42,6 +42,15 @@ android {
     }
 }
 
+val pgDriver: Configuration by configurations.creating { isTransitive = false }
+dependencies { pgDriver("org.postgresql:postgresql:42.7.4") }
+
+val patchedPgJar = tasks.register<Zip>("patchedPgJar") {
+    from({ zipTree(pgDriver.singleFile) }) { exclude("org/postgresql/util/PGPropertyMaxResultBufferParser*.class") }
+    archiveFileName.set("postgresql-android.jar")
+    destinationDirectory.set(layout.buildDirectory.dir("patched"))
+}
+
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
     implementation(composeBom)
@@ -61,7 +70,9 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // PostgreSQL JDBC driver
-    implementation("org.postgresql:postgresql:42.7.4")
+    // Stock jar minus PGPropertyMaxResultBufferParser (uses java.lang.management, absent on Android);
+    // a patched copy lives in src/main/java/org/postgresql/util.
+    implementation(files(patchedPgJar))
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.json:json:20240303") // android.jar org.json is stubbed in unit tests
