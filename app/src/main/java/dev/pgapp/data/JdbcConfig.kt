@@ -19,6 +19,7 @@ object JdbcConfig {
         setProperty("connectTimeout", p.connectTimeoutSec.toString())
         setProperty("loginTimeout", p.connectTimeoutSec.toString())
         setProperty("sslmode", p.sslMode.value)
+        if (p.sslMode == SslMode.VERIFY_FULL) setProperty("sslhostnameverifier", PgHostnameVerifier::class.java.name)
         p.caCertPath?.let { setProperty("sslrootcert", it) }
         p.clientCertPath?.let { setProperty("sslcert", it) }
         p.clientKeyPath?.let { setProperty("sslkey", it) }

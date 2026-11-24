@@ -26,7 +26,7 @@ class ConnectionManager(private val dispatcher: CoroutineDispatcher = Dispatcher
                     runCatching { conn.close() }
                     throw e
                 }
-            }.recoverCatching { throw ErrorMapper.map(it) }
+            }.recoverCatching { throw ErrorMapper.map(it, listOf(password)) }
         }
 
     /** Connects, reports the server version, then closes. */

@@ -15,7 +15,23 @@ class ConnectionFailure(val kind: FailureKind, message: String, cause: Throwable
     Exception(message, cause)
 
 object ErrorMapper {
-    fun map(t: Throwable): ConnectionFailure {
+    /** Maps [t] and appends a technical detail chain (class: message), with [secrets] scrubbed. */
+    fun map(t: Throwable, secrets: List<String> = emptyList()): ConnectionFailure {
+        val base = classify(t)
+        if (t is ConnectionFailure && t.cause == null) return t
+        val detail = describe(t, secrets)
+        return if (detail.isBlank()) base else ConnectionFailure(base.kind, base.message + "\n\nDetails:\n" + detail, t)
+    }
+
+    fun describe(t: Throwable, secrets: List<String> = emptyList()): String =
+        generateSequence(t) { it.cause }.take(6).distinctBy { it.javaClass to it.message }.joinToString("\n") { e ->
+            var line = "• " + e.javaClass.name.substringAfterLast('.') + (e.message?.let { ": " + it.lineSequence().first().take(300) } ?: "")
+            (e as? SQLException)?.sqlState?.let { line += " [SQLSTATE $it]" }
+            secrets.filter { it.length >= 3 }.forEach { line = line.replace(it, "***") }
+            line
+        }
+
+    private fun classify(t: Throwable): ConnectionFailure {
         if (t is ConnectionFailure) return t
         val chain = generateSequence(t) { it.cause }.take(10).toList()
 

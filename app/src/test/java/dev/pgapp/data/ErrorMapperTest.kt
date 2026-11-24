@@ -19,10 +19,11 @@ class ErrorMapperTest {
     @Test fun tls() = assertEquals(FailureKind.TLS, kind(SQLException("x", "08006", SSLHandshakeException("bad cert"))))
 
     @Test fun otherIncludesSqlStateOnly() {
-        val f = ErrorMapper.map(SQLException("password=hunter2 leaked", "XX000"))
+        val f = ErrorMapper.map(SQLException("password=hunter2 leaked", "XX000"), listOf("hunter2"))
         assertEquals(FailureKind.OTHER, f.kind)
         assertFalse(f.message!!.contains("hunter2"))
         assertTrue(f.message!!.contains("XX000"))
+        assertTrue(f.message!!.contains("SQLException"))
     }
 
     @Test fun idempotent() {
