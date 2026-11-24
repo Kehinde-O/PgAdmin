@@ -100,7 +100,6 @@ fun SqlEditor(
                         textStyle = textStyle,
                         cursorBrush = SolidColor(scheme.primary),
                         visualTransformation = transformation,
-                        softWrap = false,
                         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.None, autoCorrectEnabled = false),
                         modifier = Modifier.padding(8.dp).widthIn(min = 600.dp).onPreviewKeyEvent { e ->
                             if (e.type == KeyEventType.KeyDown && (e.isCtrlPressed || e.isMetaPressed) && e.key == Key.Enter) {
